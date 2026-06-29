@@ -1,0 +1,250 @@
+<div class="top-bar">Freshly roasted · Single origin · Kolonaki, Athens &nbsp;|&nbsp; Φρεσκοψημένος καφές · Μονής προέλευσης</div>
+
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="nav-inner">
+    <ul class="nav-left" [class.open]="menuOpen">
+      <li><a (click)="scrollTo('hero')">{{ t.nav.home }}</a></li>
+      <li><a (click)="scrollTo('menu')">{{ t.nav.menu }}</a></li>
+    </ul>
+    <div class="logo" (click)="scrollTo('hero')">
+      <span class="logo-main">{{ config.business.name }}</span>
+    </div>
+    <ul class="nav-right" [class.open]="menuOpen">
+      <li><a (click)="scrollTo('about')">{{ t.nav.about }}</a></li>
+      <li><a (click)="scrollTo('reviews')">{{ t.nav.reviews }}</a></li>
+      <li><a (click)="scrollTo('contact')">{{ t.nav.contact }}</a></li>
+    </ul>
+    <div class="nav-controls">
+      <button class="theme-toggle" (click)="toggleTheme()" title="Toggle theme">{{ themeIcon }}</button>
+      <button class="culture-toggle" (click)="toggleCulture()">{{ cultureLabel }}</button>
+    </div>
+    <button class="burger" (click)="toggleMenu()" [class.active]="menuOpen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-split">
+    <div class="hero-left">
+      <img [src]="config.images.hero" alt="Specialty coffee pour" loading="eager" />
+    </div>
+    <div class="hero-right">
+      <div class="hero-text">
+        <span class="hero-tag">{{ t.hero.label }}</span>
+        <h1>{{ t.hero.title }}<br><em>{{ t.hero.titleEm }}</em></h1>
+        <p>{{ t.hero.subtitle }}</p>
+        <div class="hero-actions">
+          <button class="btn btn-espresso" (click)="scrollTo('contact')">{{ t.hero.cta }}</button>
+          <a class="hero-link" (click)="scrollTo('menu')">{{ t.hero.ctaSecondary }} →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Single Origin</span><span class="sep">—</span>
+    <span>Μονής Προέλευσης</span><span class="sep">—</span>
+    <span>Pour Over</span><span class="sep">—</span>
+    <span>Cold Brew</span><span class="sep">—</span>
+    <span>Espresso</span><span class="sep">—</span>
+    <span>Φρεσκοψημένος Καφές</span><span class="sep">—</span>
+    <span>Workshops · Εργαστήρια</span><span class="sep">—</span>
+    <span>Κολωνάκι · Athens</span><span class="sep">—</span>
+    <span>Single Origin</span><span class="sep">—</span>
+    <span>Μονής Προέλευσης</span><span class="sep">—</span>
+    <span>Pour Over</span><span class="sep">—</span>
+    <span>Cold Brew</span><span class="sep">—</span>
+  </div>
+</div>
+
+<section class="menu-section" id="menu">
+  <div class="container">
+    <div class="menu-header">
+      <span class="section-label">{{ t.menu.label }}</span>
+      <h2 class="section-title">{{ t.menu.title }} <em>{{ t.menu.titleEm }}</em></h2>
+    </div>
+    <div class="menu-grid">
+      @for (item of t.menu.items; track item.name) {
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.desc }}</p>
+          </div>
+          <span class="menu-item-price">{{ item.price }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-img">
+      <img [src]="config.images.about" alt="Coffee roasting" loading="lazy" />
+    </div>
+    <div class="about-text">
+      <span class="section-label">{{ t.about.label }}</span>
+      <h2 class="section-title">{{ t.about.title }}<br><em>{{ t.about.titleEm }}</em></h2>
+      <p>{{ t.about.p1 }}</p>
+      <p>{{ t.about.p2 }}</p>
+      <blockquote>"{{ t.about.quote }}"</blockquote>
+      <button class="btn btn-espresso" (click)="scrollTo('contact')">{{ t.about.cta }}</button>
+    </div>
+  </div>
+</section>
+
+<!-- GOOGLE REVIEWS SECTION -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="reviews-header">
+      <span class="section-label">{{ t.reviews.label }}</span>
+      <h2 class="section-title">{{ t.reviews.title }} <em>{{ t.reviews.titleEm }}</em></h2>
+    </div>
+    @if (reviewsLoading) {
+      <div class="reviews-loading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <p>{{ t.reviews.loading }}</p>
+      </div>
+    }
+    @if (reviewsError) {
+      <div class="reviews-error">{{ t.reviews.error }}</div>
+    }
+    @if (!reviewsLoading && reviews.length > 0) {
+      <div class="reviews-grid">
+        @for (review of reviews; track $index) {
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-avatar">
+                @if (review.user?.thumbnail) {
+                  <img [src]="review.user.thumbnail" [alt]="review.user?.name" />
+                } @else {
+                  <span>{{ review.user?.name?.charAt(0) }}</span>
+                }
+              </div>
+              <div class="reviewer-info">
+                <span class="reviewer-name">{{ review.user?.name }}</span>
+                @if (review.user?.localGuide) {
+                  <span class="local-guide-badge">{{ t.reviews.localGuide }}</span>
+                }
+                <span class="reviewer-stats">{{ review.user?.reviews }} {{ t.reviews.reviews }}</span>
+              </div>
+            </div>
+            <div class="review-stars">
+              @for (star of getStars(review.rating); track star) {
+                <span class="star" [class.filled]="star <= review.rating">★</span>
+              }
+              <span class="review-date">{{ review.date }}</span>
+            </div>
+            <p class="review-text">{{ review.snippet }}</p>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="container contact-inner">
+    <div class="contact-text">
+      <span class="section-label">{{ t.contact.label }}</span>
+      <h2 class="section-title">{{ t.contact.title }}<br><em>{{ t.contact.titleEm }}</em></h2>
+      <ul class="cafe-info">
+        <li>📍 {{ t.contact.address }}</li>
+        <li>📞 {{ t.contact.phone }}</li>
+        <li>🕐 {{ t.contact.hours }}</li>
+      </ul>
+      <div class="map-container" (click)="openMap()" [title]="t.contact.openMap" role="button" tabindex="0" (keydown.enter)="openMap()">
+        <iframe
+          [src]="mapEmbedUrl"
+          frameborder="0"
+          scrolling="no"
+          marginheight="0"
+          marginwidth="0"
+          loading="lazy"
+          aria-hidden="true">
+        </iframe>
+        <div class="map-overlay">
+          <span class="map-hint">🗺 {{ t.contact.openMap }}</span>
+        </div>
+      </div>
+    </div>
+    <form class="contact-form" (ngSubmit)="submitReservation(f)" #f="ngForm">
+      @if (submitSuccess) {
+        <div class="form-success">{{ t.contact.success }}</div>
+      }
+      @if (submitError) {
+        <div class="form-error">{{ t.contact.error }}</div>
+      }
+      <div class="form-field">
+        <input type="text" [(ngModel)]="reservation.name" name="name" required #nameField="ngModel" [placeholder]="t.contact.namePlaceholder" />
+        @if (nameField.invalid && (nameField.dirty || nameField.touched)) {
+          <span class="field-error">{{ t.validation.required }}</span>
+        }
+      </div>
+      <div class="form-field">
+        <input type="email" [(ngModel)]="reservation.email" name="email" required email #emailField="ngModel" [placeholder]="t.contact.emailPlaceholder" />
+        @if (emailField.invalid && (emailField.dirty || emailField.touched)) {
+          @if (emailField.errors?.['required']) {
+            <span class="field-error">{{ t.validation.required }}</span>
+          }
+          @if (emailField.errors?.['email']) {
+            <span class="field-error">{{ t.validation.emailInvalid }}</span>
+          }
+        }
+      </div>
+      <div class="form-field">
+        <input type="tel" [(ngModel)]="reservation.phone" name="phone" required #phoneField="ngModel" [placeholder]="t.contact.phonePlaceholder" />
+        @if (phoneField.invalid && (phoneField.dirty || phoneField.touched)) {
+          <span class="field-error">{{ t.validation.required }}</span>
+        }
+      </div>
+      <div class="form-field">
+        <input type="date" [(ngModel)]="reservation.date" name="date" required #dateField="ngModel" />
+        @if (dateField.invalid && (dateField.dirty || dateField.touched)) {
+          <span class="field-error">{{ t.validation.required }}</span>
+        }
+      </div>
+      <div class="form-field">
+        <input type="time" [(ngModel)]="reservation.time" name="time" required #timeField="ngModel" />
+        @if (timeField.invalid && (timeField.dirty || timeField.touched)) {
+          <span class="field-error">{{ t.validation.required }}</span>
+        }
+      </div>
+      <div class="form-field">
+        <input type="number" [(ngModel)]="reservation.partySize" name="partySize" required min="1" max="50" #partySizeField="ngModel" [placeholder]="t.contact.partySizePlaceholder" />
+        @if (partySizeField.invalid && (partySizeField.dirty || partySizeField.touched)) {
+          <span class="field-error">{{ t.validation.required }}</span>
+        }
+      </div>
+      <label class="culture-label">{{ t.contact.languageLabel }}</label>
+      <div class="form-field">
+        <select [(ngModel)]="reservation.culture" name="culture" required #cultureField="ngModel">
+          <option value="el">{{ t.contact.languageEl }}</option>
+          <option value="en">{{ t.contact.languageEn }}</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <textarea [(ngModel)]="reservation.notes" name="notes" rows="3" [placeholder]="t.contact.notesPlaceholder"></textarea>
+      </div>
+      <button type="submit" class="btn btn-espresso" [disabled]="isSubmitting || f.invalid" style="width:100%;justify-content:center">
+        @if (isSubmitting) { <span class="btn-spinner"></span> }
+        {{ isSubmitting ? t.contact.submitting : t.contact.submit }}
+      </button>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-logo">{{ config.business.name }}</div>
+    <p>{{ t.footer.tagline }}</p>
+    <p>{{ t.footer.copy }}</p>
+    <ul class="footer-links">
+      <li><a [href]="config.business.social.instagram" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a [href]="config.business.social.facebook">Facebook</a></li>
+    </ul>
+  </div>
+</footer>
