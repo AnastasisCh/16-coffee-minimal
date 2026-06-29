@@ -15,6 +15,7 @@ import { TRANSLATIONS } from './config/translations';
 })
 export class AppComponent implements OnInit {
   readonly config = SITE_CONFIG;
+  readonly mapEmbedUrl: SafeResourceUrl;
 
   isScrolled = false;
   menuOpen = false;
@@ -35,7 +36,12 @@ export class AppComponent implements OnInit {
   reviewsLoading = false;
   reviewsError = false;
 
-  constructor(private http: HttpClient, private renderer: Renderer2, private sanitizer: DomSanitizer) {}
+  constructor(private http: HttpClient, private renderer: Renderer2, private sanitizer: DomSanitizer) {
+    const { lat, lng } = SITE_CONFIG.location;
+    this.mapEmbedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://maps.google.com/maps?q=${lat},${lng}&t=&z=15&ie=UTF8&iwloc=&output=embed`
+    );
+  }
 
   ngOnInit() {
     const savedTheme = localStorage.getItem('theme') as Theme;
@@ -123,12 +129,6 @@ export class AppComponent implements OnInit {
 
   getStars(rating: number): number[] { return [1, 2, 3, 4, 5]; }
 
-  get mapEmbedUrl(): SafeResourceUrl {
-    const { lat, lng } = this.config.location;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://maps.google.com/maps?q=${lat},${lng}&t=&z=15&ie=UTF8&iwloc=&output=embed`
-    );
-  }
 
   openMap(): void {
     window.open(this.config.location.mapsUrl, '_blank', 'noopener');
