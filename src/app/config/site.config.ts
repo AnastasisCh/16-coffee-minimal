@@ -3,7 +3,7 @@ export type Culture = 'el' | 'en';
 
 export const SITE_CONFIG = {
   api: {
-    baseUrl: 'https://marketswebapi-gde3hpftfdhuawaj.westeurope-01.azurewebsites.net',
+    baseUrl: 'https://cafebarrestaurantapi-gjagh7csarhjaxd7.italynorth-01.azurewebsites.net',
     market: 'CoffeeMinimal',
   },
   theme: {

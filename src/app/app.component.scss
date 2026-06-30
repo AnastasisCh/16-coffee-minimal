@@ -132,6 +132,27 @@
   .footer-inner { flex-direction: column; text-align: center; }
 }
 
+@media (max-width: 480px) {
+  .container { padding: 0 1rem; }
+  .navbar { padding: 1rem; }
+  .nav-controls { gap: 0.35rem; }
+  .theme-toggle, .culture-toggle { padding: 0.3rem 0.5rem; font-size: 0.7rem; }
+  .hero-split { grid-template-columns: 1fr; min-height: auto; }
+  .hero-left { height: 45vw; }
+  .hero-right { padding: 2.5rem 1rem; }
+  .hero-text { max-width: 100%; }
+  .hero-text h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  .hero-actions { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .btn { width: 100%; justify-content: center; }
+  .about-text { padding: 2rem 1.25rem; }
+  .contact { padding: 4rem 0; }
+  .contact-form { padding: 1.5rem; }
+  .contact-form input, .contact-form select, .contact-form textarea { width: 100%; }
+  .menu-section { padding: 4rem 0; }
+  .reviews { padding: 4rem 0; }
+  .section-title { font-size: clamp(1.6rem, 6vw, 2rem); }
+}
+
 /* REVIEWS */
 .reviews {
   padding: 7rem 0;
